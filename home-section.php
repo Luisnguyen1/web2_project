@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-    <section class="home" id="home">
+    <section class="home" id="home" style="top: -20px;">
         <div class="home-text">
             <h6>Nền tảng học trực tuyến số 1</h6>
             <h1>Khóa học online cho tất cả mọi người</h1>

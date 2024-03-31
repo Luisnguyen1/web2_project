@@ -1,7 +1,7 @@
 
 <html lang="en">
 <body>
-    <header>
+    <header >
         <a href="#" class="logo">
             <img src="img/CIP-VMSchool/svg/logo-no-background.svg" alt="Logo" style="width: 160px;">
         </a>

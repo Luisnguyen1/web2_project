@@ -1,0 +1,28 @@
+CREATE TABLE `LopHoc`(
+    `MaLH` VARCHAR(255) NOT NULL,
+    `TenLH` VARCHAR(255) NOT NULL,
+    `MaGV` VARCHAR(255) NOT NULL,
+    `MaKhoaHoc` VARCHAR(255) NOT NULL,
+    `NgayKhaiGiang` DATE NOT NULL,
+    `GioHoc` DATETIME NOT NULL,
+    PRIMARY KEY(`MaLH`)
+);
+CREATE TABLE `GiaoVien`(
+    `MaGV` VARCHAR(255) NOT NULL,
+    `TenGV` VARCHAR(255) NOT NULL,
+    `SDT` VARCHAR(255) NOT NULL,
+    `Email` VARCHAR(255) NOT NULL,
+    `GioiThieu` VARCHAR(255) NOT NULL,
+    PRIMARY KEY(`MaGV`)
+);
+CREATE TABLE `KhoaHoc`(
+    `MaKhoaHoc` VARCHAR(255) NOT NULL,
+    `TenKhoaHoc` VARCHAR(255) NOT NULL,
+    `Noidung` VARCHAR(255) NOT NULL,
+    `PicLink` VARCHAR(255) NOT NULL,
+    PRIMARY KEY(`MaKhoaHoc`)
+);
+ALTER TABLE
+    `LopHoc` ADD CONSTRAINT `lophoc_makhoahoc_foreign` FOREIGN KEY(`MaKhoaHoc`) REFERENCES `KhoaHoc`(`MaKhoaHoc`);
+ALTER TABLE
+    `LopHoc` ADD CONSTRAINT `lophoc_magv_foreign` FOREIGN KEY(`MaGV`) REFERENCES `GiaoVien`(`TenGV`);
