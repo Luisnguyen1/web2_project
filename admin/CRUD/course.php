@@ -1,5 +1,8 @@
 <?php include('setupDB.php'); ?>
-
+<?php include('CRUD-Function-course.php');
+$editID = "";
+$deleteID = "";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +13,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -17,9 +21,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
 
     <style>
         body {
@@ -296,49 +304,39 @@
         .modal form label {
             font-weight: normal;
         }
-
-        .form-control-borderless {
-            border: none;
-        }
-
-        .form-control-borderless:hover,
-        .form-control-borderless:active,
-        .form-control-borderless:focus {
-            border: none;
-            outline: none;
-            box-shadow: none;
-        }
     </style>
+
     <script>
         $(document).ready(function() {
-            $("#searchID").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#dataTable tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
-            // Activate tooltip
             $('[data-toggle="tooltip"]').tooltip();
+            $('#myTable').DataTable({
+                select: true,
+                pageLength: 5
+            });
+        });
+    </script>
 
-            // Select/Deselect checkboxes
-            var checkbox = $('table tbody input[type="checkbox"]');
-            $("#selectAll").click(function() {
-                if (this.checked) {
-                    checkbox.each(function() {
-                        this.checked = true;
-                    });
-                } else {
-                    checkbox.each(function() {
-                        this.checked = false;
-                    });
-                }
-            });
-            checkbox.click(function() {
-                if (!this.checked) {
-                    $("#selectAll").prop("checked", false);
-                }
-            });
+    <script>
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Select/Deselect checkboxes
+        var checkbox = $('table tbody input[type="checkbox"]');
+        $("#selectAll").click(function() {
+            if (this.checked) {
+                checkbox.each(function() {
+                    this.checked = true;
+                });
+            } else {
+                checkbox.each(function() {
+                    this.checked = false;
+                });
+            }
+        });
+        checkbox.click(function() {
+            if (!this.checked) {
+                $("#selectAll").prop("checked", false);
+            }
         });
     </script>
 </head>
@@ -352,7 +350,7 @@
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" id ="searchID"/>
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" id="searchID" />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
@@ -382,18 +380,10 @@
                             Dashboard
                         </a>
 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCRUDcourse" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link" href="course.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             CRUD - Khóa học
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseCRUDcourse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="#">Thêm khóa học</a>
-                                <a class="nav-link" href="#">Xóa & sửa thông tin khóa học</a>
-                            </nav>
-                        </div>
-
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCRUDclass" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             CRUD - Lớp học
@@ -491,13 +481,15 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <!--end of col-->
-                                    <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Tìm kiếm bằng nội dung bạn muốn">
-                                    </div>
-                                    <!--end of col-->
-                                    <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Tìm kiếm</button>
-                                    </div>
+                                    <form action="course.php" method="">
+                                        <div class="col">
+                                            <input class="form-control form-control-lg form-control-borderless" id="input" type="search" name="input" placeholder="Tìm kiếm bằng nội dung bạn muốn">
+                                        </div>
+                                        <!--end of col-->
+                                        <div class="col-auto">
+                                            <button class="btn btn-lg btn-success" type="submit">Tìm kiếm</button>
+                                        </div>
+                                    </form>
                                     <!--end of col-->
                                 </div>
                             </form>
@@ -505,6 +497,7 @@
                         <!--end of col-->
                     </div>
                 </div>
+
 
                 <div class="container-xl">
                     <div class="table-responsive">
@@ -515,11 +508,11 @@
                                         <h2>Quản lý <b>khóa học</b></h2>
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm khóa học mới</span></a>
+                                        <a href="#addCourse" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm khóa học mới</span></a>
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover" id="myTable">
                                 <thead>
                                     <tr>
                                         <th>
@@ -532,18 +525,27 @@
                                         <th>Tên khóa học</th>
                                         <th>Nội dung</th>
                                         <th>Hình ảnh</th>
+                                        <th>Giá tiền</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="dataTable">
+                                <tbody>
                                     <?php
-                                    $sql = "SELECT MaKhoaHoc, TenKhoaHoc, NoiDung, PicLink FROM khoahoc";
+                                    $name = "";
+                                    if (isset($_REQUEST["input"])) {
+                                        $name = $_REQUEST["input"];
+                                    }
+                                    if (!empty($name)) {
+                                        $sql = 'SELECT * FROM khoahoc WHERE MaKhoaHoc LIKE "%' . $name . '%"';
+                                    } else {
+                                        $sql = "SELECT MaKhoaHoc, TenKhoaHoc, NoiDung, PicLink, price FROM khoahoc";
+                                    }
                                     $result = $conn->query($sql);
 
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
                                     ?>
-                                            <tr>
+                                            <tr id="<?php echo $row["MaKhoaHoc"]; ?>">
                                                 <td>
                                                     <span class="custom-checkbox">
                                                         <input type="checkbox" id="checkbox1" name="options[]" value="1">
@@ -554,9 +556,25 @@
                                                 <td><?php echo $row["TenKhoaHoc"] ?></td>
                                                 <td><?php echo $row["NoiDung"] ?></td>
                                                 <td><?php echo $row["PicLink"] ?></td>
+                                                <td><?php echo $row["price"] ?></td>
                                                 <td>
-                                                    <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                                    <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    <a href="#editKhoahoc" class="edit" data-bs-toggle="modal" data-bs-target="#editKhoahoc" data-id="<?php echo $row['MaKhoaHoc']; ?>"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+
+                                                    <a href="#deleteKhoahoc" class="delete" data-bs-toggle="modal" data-bs-target="#deleteKhoahoc" data-id="<?php echo $row['MaKhoaHoc']; ?>"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            $('body').on('click', '.edit', function() {
+                                                                document.getElementById("EditID").value = $(this).attr('data-id');
+                                                                
+                                                            });
+
+                                                            $('body').on('click', '.delete', function() {
+                                                                document.getElementById("DeleteID").value = $(this).attr('data-id');
+                                                                console.log($(this).attr('data-id'));
+                                                            });
+                                                        });
+                                                    </script>
+
                                                 </td>
                                             </tr>
                                     <?php
@@ -567,107 +585,106 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <div class="clearfix">
-                                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                                <ul class="pagination">
-                                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Edit Modal HTML -->
-                <div id="addEmployeeModal" class="modal fade">
+                <!-- add Modal HTML -->
+                <div id="addCourse" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form>
+                            <form method="GET" action="" class="form" enctype="multipart/form-data">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Add Employee</h4>
+                                    <h4 class="modal-title">Thêm khóa học</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Mã khóa học</label>
+                                        <input type="text" class="form-control" name="title" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" required>
+                                        <label>Tên khóa học</label>
+                                        <input type="text" class="form-control" name="namecourse" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Address</label>
-                                        <textarea class="form-control" required></textarea>
+                                        <label>Nội dung</label>
+                                        <textarea class="form-control" name="description" required></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label>Phone</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Giá tiền</label>
+                                        <textarea class="form-control" name="Price" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hình ảnh</label>
+                                        <input type="file" name="image" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <input type="submit" class="btn btn-success" value="Add">
+                                    <input type="submit" name="submit" class="btn btn-success" value="Add">
+
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
                 <!-- Edit Modal HTML -->
-                <div id="editEmployeeModal" class="modal fade">
+
+                <div id="editKhoahoc" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form>
+                            <form id="editForm" enctype="multipart/form-data" method="post">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Edit Employee</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Chỉnh sửa khóa học</h4>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Mã khóa học</label>
+                                        <input type="text" class="form-control" name = "EditID" id="EditID" value="" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" required>
+                                        <label>Tên khóa học</label>
+                                        <input type="text" class="form-control" name = "EditName" value="">
                                     </div>
                                     <div class="form-group">
-                                        <label>Address</label>
-                                        <textarea class="form-control" required></textarea>
+                                        <label>Nội dung</label>
+                                        <textarea class="form-control" name = "EditContent" ></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label>Phone</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Giá tiền</label>
+                                        <textarea class="form-control" name="EditPrice" ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hình ảnh</label>
+                                        <input type="file" name="image" class="form-control">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <input type="submit" class="btn btn-info" value="Save">
+                                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancel">
+                                    <input type="submit" class="btn btn-info" name="submit" value="Save">
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
                 <!-- Delete Modal HTML -->
-                <div id="deleteEmployeeModal" class="modal fade">
+                <div id="deleteKhoahoc" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <form>
                                 <div class="modal-header">
                                     <h4 class="modal-title">Delete Employee</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Are you sure you want to delete these Records?</p>
+                                    <p>Bạn có muốn xóa mã khóa học : <input type="text" class="form-control" id="DeleteID" name = "DeleteID" value="" readonly></p>
                                     <p class="text-warning"><small>This action cannot be undone.</small></p>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <input type="submit" class="btn btn-danger" value="Delete">
+                                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancel">
+                                    <input type="submit" class="btn btn-danger" name="submit" value="Delete">
                                 </div>
                             </form>
                         </div>
@@ -693,7 +710,34 @@
     <script src="js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="js/datatables-simple-demo.js"></script>
+    <!-- <script>
+        // ajax to send data to php fie
+        $(document).on('submit','#editForm', function(e){
+            e.preventDefault();
+            var form = $('#editForm')[0];
+            var data = new FormData(form);
+            data.append('editForm', true);
+            
+            $.ajax({
+                url: 'CRUD-Function-course.php',
+                type: 'POST',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data){
+                    
+                    $('#editKhoahoc').modal('hide');
+                    location.reload();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+
+    </script> -->
     
 </body>
 

@@ -7,11 +7,11 @@
         </a>
 
         <ul class ="navbar">
-            <li><a href="#home">Trang chủ</a></li>
-            <li><a href="#information">Thông tin</a></li>
-            <li><a href="#courses">Khóa học</a></li>
-            <li><a href="#about">Về chúng tôi</a></li>
-            <li><a href="#contact">Liên hệ</a></li>
+            <li><a href="http://localhost/web2-project/#home">Trang chủ</a></li>
+            <li><a href="http://localhost/web2-project/#information">Thông tin</a></li>
+            <li><a href="http://localhost/web2-project/#courses">Khóa học</a></li>
+            <li><a href="http://localhost/web2-project/#about">Về chúng tôi</a></li>
+            <li><a href="http://localhost/web2-project/#contact">Liên hệ</a></li>
         </ul>
 
         <div class = "header-icons">
