@@ -15,11 +15,11 @@
         <div class="row">
             <div class="col-sm-3 hidden-xs">
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Shoes</a>
-                    <a href="#" class="list-group-item">- Satchel</a>
-                    <a href="#" class="list-group-item">- Tote</a>
-                    <a href="#" class="list-group-item">- Shoulder</a>
-                    <a href="#" class="list-group-item">- Clutch &amp; Mini</a>
+                    <a href="#" class="list-group-item">Robot</a>
+                    <a href="#" class="list-group-item">Thiết kế 3D</a>
+                    <a href="#" class="list-group-item">Lập trình Website</a>
+                    <a href="#" class="list-group-item">Mạch điện</a>
+                    <a href="#" class="list-group-item">Làm game</a>
                 </div>
 
                 <div class="product-sidebar">
@@ -38,13 +38,13 @@
                     ?>
                             <div class="product-item">
                                 <div class="image">
-                                    <a href="#"><img src="<?php echo $row["PicLink"] ?>" alt="Product 2"></a>
+                                    <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]; ?>"><img src="<?php echo $row["PicLink"] ?>" alt="Product 2"></a>
                                 </div>
                                 <div class="name">
-                                    <a href="#"><?php echo $row["TenKhoaHoc"] ?></a>
+                                    <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]; ?>"><?php echo $row["TenKhoaHoc"] ?></a>
                                 </div>
                                 <div class="price">
-                                    <span class="price-new"><?php echo $row["price"] ?></span>
+                                    <span class="price-new"><?php echo number_format((int)$row['price']);?> VND</span>
                                 </div>
                             </div>
 
@@ -121,24 +121,24 @@
                                 <div class="product-item">
                                     <div class="item-overlay">
                                         <div class="clickable">
-                                            <a href="#"><?php echo $row["TenKhoaHoc"] ?></a>
+                                            <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]; ?>"><?php echo $row["TenKhoaHoc"]; ?></a>
                                         </div>
                                     </div>
                                     <div class="sale-tag">
                                         <span>SALE</span>
                                     </div>
                                     <div class="image">
-                                        <a href="#"><img src="<?php echo $row["PicLink"] ?>" alt="Product 2"></a>
+                                        <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]; ?>"><img src="<?php echo $row["PicLink"] ?>" alt="Product 2"></a>
                                     </div>
                                     <div class="caption">
                                         <div class="name">
-                                            <a href="#"><?php echo $row["TenKhoaHoc"] ?></a>
+                                            <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]; ?>"><?php echo $row["TenKhoaHoc"] ?></a>
                                         </div>
                                         <div class="description">
                                             <p><?php echo $row["NoiDung"] ?></p>
                                         </div>
                                         <div class="price">
-                                            <span class="price-new"><?php echo $row["price"] ?> VND</span>
+                                            <span class="price-new"><?php echo number_format((int)$row['price']);?> VND</span>
                                         </div>
                                         <div class="cart">
                                             <button type="button" class="btn btn-primary">Add to Cart</button>

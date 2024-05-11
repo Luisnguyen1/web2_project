@@ -1,7 +1,7 @@
 <html lang="en">
 
 <body>
-    <section class="container">
+    <section class="container" id ="courses">
         <div class="center-text" style="text-align: center;">
             <h5 style="color: var(--main-color);    font-size: 16px;    font-weight: 600;    letter-spacing: 1px;    margin-bottom: 20px;">VM School</h5>
             <h2 style="font-size: var(--h2-font);    line-height: 1.2;">Các khóa học tiêu biểu</h2>
