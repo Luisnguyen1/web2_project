@@ -1,3 +1,6 @@
+<?php 
+    session_start()
+?>
 <?php
 include_once('setupDB.php');
 if (!isset($_REQUEST['productID'])) {
@@ -13,7 +16,9 @@ if (!isset($_REQUEST['productID'])) {
         die();
     }
 }
+
 ?>
+<?php include('addCart.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,9 +98,10 @@ if (!isset($_REQUEST['productID'])) {
                 <h3><?php echo number_format((int)$row['price']);?> VND</h3>
 
 
-                <form class="add-inputs" method="post">
-                    <input type="number" class="form-control" id="cart_quantity" name="cart_quantity" value="1" min="1" max="10">
-                    <button name="add_to_cart" type="submit" class="btn btn-primary btn-lg">Add to cart</button>
+                <form class="add-inputs" method="post"  action="">
+                    <input type="hidden" name="IDproduct" value= "<?php echo $row["MaKhoaHoc"]; ?>" />
+                    <input type="number" class="form-control" id="cart_quantity" name="soluong" value="1" min="1" max="10">
+                    <button name="addCart" type="submit" class="btn btn-primary btn-lg">Add to cart</button>
                 </form>
                 <div style="clear:both"></div>
                 <p class="par-title mt-4 mb-1">About this product</p>

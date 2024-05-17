@@ -1,7 +1,9 @@
 
 <html lang="en">
+    
 <body>
     <header >
+        
         <a href="#" class="logo">
             <img src="img/CIP-VMSchool/svg/logo-no-background.svg" alt="Logo" style="width: 160px;">
         </a>
@@ -15,9 +17,9 @@
         </ul>
 
         <div class = "header-icons">
-            <a href="#"><i class='bx bx-user'></i></a>
+            <a href="http://localhost/web2-project/user.php"><i class='bx bx-user'></i></a>
             <a href="#"><i class='bx bx-heart' ></i></a>
-            <a href="#"><i class='bx bx-cart' ></i></a>
+            <a href="http://localhost/web2-project/cart.php"><i class='bx bx-cart' ></i></a>
             <div class = "bx bx-menu" id ="menu-icon"></div>
         </div>
     </header>

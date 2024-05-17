@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ</title>
+    <title>Hóa đơn</title>
 
     <!-- Special css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -36,10 +36,10 @@
     </style>
     <?php include('setupDB.php'); ?>
     <?php include('header.php'); ?>
-    <?php include('home-section.php'); ?>
-    <?php include('container-section.php'); ?>
-    <?php include('aboutus.php'); ?>
-    <?php include('contact.php'); ?>
+    <div class="center-text" style="text-align: center;">
+        <h5 style="color: var(--main-color);    font-size: 16px;    font-weight: 600;    letter-spacing: 1px;    margin-bottom: 20px; margin-top: 20px;">VM School</h5>
+        <h2 style="font-size: var(--h2-font);    line-height: 1.2;">Hóa đơn của bạn</h2>
+    </div>
     <?php include('cta.php'); ?>
     <?php include('footer.php'); ?>
     <script src="js/script.js"></script>

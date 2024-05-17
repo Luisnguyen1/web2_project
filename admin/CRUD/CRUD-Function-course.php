@@ -1,10 +1,38 @@
 <?php include_once('setupDB.php'); ?>
 <?php
+function img()
+{
+    $IMGUR_CLIENT_ID = "b5578431a907694";
 
+
+    if (isset($_POST['submit'])) {
+        // Source image 
+        $image_source = file_get_contents($_FILES['image']['tmp_name']);
+
+        // Post image to Imgur via API 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.imgur.com/3/image');
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $IMGUR_CLIENT_ID));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array('image' => base64_encode($image_source)));
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        // Decode API response to array 
+        $responseArr = json_decode($response);
+        printf('<img height="180" src="%s" >', $responseArr->data->link);
+        return $responseArr;
+    }
+
+
+
+    return ;
+}
 
 function imgur()
 {
-    $IMGUR_CLIENT_ID = "425b7b6052e33c1";
+    $IMGUR_CLIENT_ID = "b5578431a907694";
 
 
     $statusMsg = $valErr = '';
@@ -85,19 +113,21 @@ function addCourse()
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $imgurData = imgur();
+
     $id = $_REQUEST["title"];
     $name = $_REQUEST["namecourse"];
     $description = $_REQUEST["description"];
     $giatien = $_REQUEST["Price"];
+
+    $imgurData = imgur();
     $imgur = $imgurData->data->link;
 
     $sql = "INSERT INTO khoahoc (MaKhoaHoc, TenKhoaHoc, NoiDung, PicLink, price)
-    VALUES ('$id', '$name', '$description', '$imgur', '$giatien')";
+    VALUES ('" . $id . "', '" . $name . "', '" . $description . "', '" . $imgur . "', '" . $giatien . "')";
     if ($conn->query($sql) === TRUE) {
-        echo "<scrpit>alert('Thêm khóa học thành công!'');</script>";
-      } else {
-        echo "<scrpit>alert('Thêm khóa học xảy ra lỗi!');</script>";
+        echo "<script>alert('Thêm khóa học thành công!');</script>";
+    } else {
+        echo "<script>alert('Thêm khóa học xảy ra lỗi!');</script>";
     }
 }
 if (isset($_REQUEST['submit'])) {
@@ -113,10 +143,10 @@ if (isset($_REQUEST['submit'])) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT * FROM `khoahoc` WHERE MaKhoaHoc = '".$_REQUEST['title']."'";
+        $sql = "SELECT * FROM `khoahoc` WHERE MaKhoaHoc = '" . $_REQUEST['title'] . "'";
         $result = $conn->query($sql);
 
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             echo "<script>alert('Mã khóa học đã tồn tại !');</script>";
         } else {
             addCourse();
@@ -129,7 +159,7 @@ if (isset($_REQUEST['submit'])) {
         $password = "";
         $dbname = "vm-school";
 
-        $sql = "SELECT MaKhoaHoc, TenKhoaHoc, NoiDung, PicLink, price FROM khoahoc WHERE MaKhoaHoc = '".$_REQUEST['EditID']."'";
+        $sql = "SELECT MaKhoaHoc, TenKhoaHoc, NoiDung, PicLink, price FROM khoahoc WHERE MaKhoaHoc = '" . $_REQUEST['EditID'] . "'";
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
 
@@ -138,42 +168,42 @@ if (isset($_REQUEST['submit'])) {
         $giatien = 0;
         $img = $_REQUEST["image"];
 
-        if(empty($_REQUEST["EditName"])){
+        if (empty($_REQUEST["EditName"])) {
             $name = $row['TenKhoaHoc'];
         }
-        if(!empty($_REQUEST["EditName"])){
+        if (!empty($_REQUEST["EditName"])) {
             $name = $_REQUEST["EditName"];
         }
 
-        if(empty($_REQUEST["EditPrice"])){
+        if (empty($_REQUEST["EditPrice"])) {
             $giatien = $row['price'];
         }
-        if(!empty($_REQUEST["EditPrice"])){
+        if (!empty($_REQUEST["EditPrice"])) {
             $giatien = (int)$_REQUEST["EditPrice"];
         }
 
 
-        if(empty($_REQUEST["EditContent"])){
+        if (empty($_REQUEST["EditContent"])) {
             $content = $row['NoiDung'];
         }
-        if(!empty($_REQUEST["EditContent"])){
+        if (!empty($_REQUEST["EditContent"])) {
             $content = $_REQUEST["EditContent"];
         }
 
-        if(empty($_FILES["image"]["name"])){
+        if (empty($_FILES["image"]["name"])) {
             $img = $row['PicLink'];
         }
-        if(!empty($_FILES["image"]["name"])){
+        if (!empty($_FILES["image"]["name"])) {
             $imgurData = imgur();
             $img = $imgurData->data->link;
         }
 
-        $sql = "UPDATE khoahoc SET TenKhoaHoc = '".$name."', Noidung = '".$content."', PicLink = '".$img."', price = '".$giatien."' WHERE MaKhoaHoc = '".$_REQUEST['EditID']."'";
+        $sql = "UPDATE khoahoc SET TenKhoaHoc = '" . $name . "', Noidung = '" . $content . "', PicLink = '" . $img . "', price = '" . $giatien . "' WHERE MaKhoaHoc = '" . $_REQUEST['EditID'] . "'";
         if ($conn->query($sql) === TRUE) {
             echo "<script>alert('Sửa khóa học thành công!');</script>";
-          } else {
+        } else {
             echo "<script>alert('Sửa khóa học xảy ra lỗi!');</script>";
-        }        
+        }
     }
     //xóa
     if ($_REQUEST['submit'] == "Delete") {
@@ -187,15 +217,19 @@ if (isset($_REQUEST['submit'])) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "DELETE FROM khoahoc WHERE MaKhoaHoc = '".$_REQUEST['DeleteID']."'";
-        if ($conn->query($sql) === false) {
-            echo "<script>alert('Xóa khóa học xảy ra lỗi!');</script>";
-        }
-        else {
-            echo "<script>alert('Xóa khóa học thành công!');</script>";
+        $sql = "SELECT * FROM `chitiethoadon` WHERE makhoahoc = '" . $_REQUEST['DeleteID'] . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo "<script>alert('Khóa học đã được đăng ký học, không thể xóa!');</script>";
+            return;
+        } else {
+            $sql = "DELETE FROM khoahoc WHERE MaKhoaHoc = '" . $_REQUEST['DeleteID'] . "'";
+            if ($conn->query($sql) === false) {
+                echo "<script>alert('Xóa khóa học xảy ra lỗi!');</script>";
+            } else {
+                echo "<script>alert('Xóa khóa học thành công!');</script>";
+            }
         }
         
     }
-
 }
-

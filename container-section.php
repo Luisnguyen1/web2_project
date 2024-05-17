@@ -14,14 +14,14 @@
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
         ?>  
-                <div class="item">
+                <div class="item" >
                     <div class="container-box" style="padding-left: 20px">
-                        <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" src="<?php echo $row["PicLink"]?>" alt="Card image cap">
+                        <div class="card" style="width: 18rem;" >
+                            <img class="card-img-top" src="<?php echo $row["PicLink"]?>" alt="Card image cap" >
                             <div class="card-body">
-                                <h5 class="card-title"><?php echo $row["TenKhoaHoc"]?></h5>
+                                <h5 class="card-title" ><?php echo $row["TenKhoaHoc"]?></h5>
                                 <p class="card-text"><?php echo $row["NoiDung"]?></p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="http://localhost/web2-project/product-detail.php?productID=<?php echo $row["MaKhoaHoc"]?>" class="btn btn-primary">Tìm hiểu thêm</a>
                             </div>
                         </div>
                     </div>

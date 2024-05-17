@@ -1,3 +1,9 @@
+<?php 
+    session_start()
+?>
+<?php include('setupDB.php'); ?>
+<?php include('addCart.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -178,7 +184,7 @@
             height: 250px
         }
     </style>
-    <?php include('setupDB.php'); ?>
+
     <?php include('header.php'); ?>
     <?php include('product-list.php'); ?>
     <?php include('footer.php'); ?>

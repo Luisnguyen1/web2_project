@@ -1,5 +1,5 @@
 <?php 
-	$IMGUR_CLIENT_ID = "425b7b6052e33c1"; 
+	$IMGUR_CLIENT_ID = "b5578431a907694"; 
  
 	// Source image 
 	$image_source = file_get_contents("img/aboutus.png"); 
@@ -18,7 +18,7 @@
 	$responseArr = json_decode($response); 
 	 
 	// Print API response 
-	print '<pre>'; print_r($responseArr); print '</pre>'; 
+
 	 
 	// Display image from Imgur 
 	printf('<img height="180" src="%s" >', $responseArr->data->link);

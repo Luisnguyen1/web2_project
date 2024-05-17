@@ -1,3 +1,4 @@
+
 <html lang="en">
 
 <body>
@@ -141,7 +142,11 @@
                                             <span class="price-new"><?php echo number_format((int)$row['price']);?> VND</span>
                                         </div>
                                         <div class="cart">
-                                            <button type="button" class="btn btn-primary">Add to Cart</button>
+                                            <form method="POST" action="" class="form" enctype="multipart/form-data">
+                                                <input type="hidden" name="IDproduct" value= "<?php echo $row["MaKhoaHoc"]; ?>" />
+                                                <input type="submit" class="btn btn-primary" name = "addCart" value="Add to cart">
+                                            </form>
+                            
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-default wishlist" data-toggle="tooltip" data-placement="right" title="Wishlist"><i class="fa fa-heart"></i></button>
